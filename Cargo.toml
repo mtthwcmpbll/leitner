@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "leitner-core",
+    "leitner-cli",
+]
