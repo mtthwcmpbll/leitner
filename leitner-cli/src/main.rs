@@ -23,6 +23,7 @@ enum Commands {
         #[clap(short, long, action)]
         answer: String,
     },
+    Schedule,
 }
 
 fn connect_repository(repo_path: &PathBuf) -> Result<InMemoryFactRepository, Box<dyn Error>> {
@@ -53,6 +54,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             println!("{}", answer);
 
             repo.add_fact(Fact::new(question, answer));
+        },
+        Some(Commands::Schedule) => {
+            println!("{}", repo);
         }
         None => println!("No command given"),
     }
@@ -65,7 +69,6 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // save the repository
     let repo_json: String = serde_json::to_string(&repo)?;
-    println!("{}", repo_json);
     let mut options = OpenOptions::new();
     let mut repo_file = options.write(true).create(true).open(repo_path)?;
     repo_file.write_all(repo_json.as_bytes())?;
